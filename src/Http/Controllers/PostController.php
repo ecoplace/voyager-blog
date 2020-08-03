@@ -22,7 +22,7 @@ class PostController extends VoyagerBaseController
                 ['status', '=', 'PUBLISHED'],
                 ['featured', '=', '1'],
             ])->whereDate('published_date', '<=', Carbon::now())
-            ->orderBy('created_at', 'desc')
+            ->orderBy('published_date', 'desc')
             ->first();
         $featuredPostId = $featuredPost ? $featuredPost->id : 0;
 
@@ -31,7 +31,7 @@ class PostController extends VoyagerBaseController
                 ['status', '=', 'PUBLISHED'],
                 ['id', '!=', $featuredPostId],
             ])->whereDate('published_date', '<=', Carbon::now())
-            ->orderBy('created_at', 'desc')
+            ->orderBy('published_date', 'desc')
             ->paginate(12);
 
         return view("{$this->viewPath}::modules/posts/posts", [
@@ -67,7 +67,7 @@ class PostController extends VoyagerBaseController
                         $query->orWhere('tags', 'LIKE', '%'.trim($tag).'%');
                     }
                 })->limit(4)
-                ->orderBy('created_at', 'desc')
+                ->orderBy('published_date', 'desc')
                 ->get();
         }
 
