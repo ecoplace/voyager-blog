@@ -61,8 +61,8 @@ class PostController extends VoyagerBaseController
         if (!empty(trim($post->tags))) {
             $tags = explode(',', $post->tags);
             $relatedPosts = BlogPost::where([
-                    ['id', '!=', $post->id],
-                ])->where(function ($query) use ($tags) {
+                    ['id', '!=', $post->id],['status', '=', 'PUBLISHED']
+                ])->whereDate('published_date', '<=', Carbon::now())->where(function ($query) use ($tags) {
                     foreach ($tags as $tag) {
                         $query->orWhere('tags', 'LIKE', '%'.trim($tag).'%');
                     }
