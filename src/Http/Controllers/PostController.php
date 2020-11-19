@@ -50,11 +50,15 @@ class PostController extends VoyagerBaseController
     public function getPost($slug)
     {
         // The post
-        $post = BlogPost::where([
+        try {
+            $post = BlogPost::where([
                 ['slug', '=', $slug],
                 ['status', '=', 'PUBLISHED'],
             ])->whereDate('published_date', '<=', Carbon::now())
-            ->firstOrFail();
+                ->firstOrFail();
+        }catch (\Exception $exception){
+            abort(404);
+        }
 
         // Related posts (based on tags)
         $relatedPosts = array();
